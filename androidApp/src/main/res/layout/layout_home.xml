@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent">
+
+	<TextView
+		android:id="@+id/textViewTitle"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_marginLeft="24dp"
+		android:layout_marginTop="46dp"
+		android:text="Home"
+		android:textColor="@color/black_02"
+		android:textSize="28dp"
+		android:textStyle="bold"
+		app:layout_constraintLeft_toLeftOf="parent"
+		app:layout_constraintTop_toTopOf="parent"
+		tools:text="Libraries Samples" />
+
+	<TextView
+		android:id="@+id/textViewHello"
+		android:layout_width="0dp"
+		android:layout_height="wrap_content"
+		android:layout_marginTop="22dp"
+		android:background="?attr/selectableItemBackground"
+		android:paddingLeft="24dp"
+		android:paddingTop="16dp"
+		android:paddingBottom="16dp"
+		android:text="📌  Hello"
+		android:textColor="@color/black_04"
+		android:textSize="14dp"
+		android:textStyle="bold"
+		app:layout_constraintLeft_toLeftOf="parent"
+		app:layout_constraintRight_toRightOf="parent"
+		app:layout_constraintTop_toBottomOf="@+id/textViewTitle" />
+
+	<TextView
+		android:id="@+id/textViewNiceToMeetYou"
+		android:layout_width="0dp"
+		android:layout_height="wrap_content"
+		android:background="?attr/selectableItemBackground"
+		android:paddingLeft="24dp"
+		android:paddingTop="16dp"
+		android:paddingBottom="16dp"
+		android:text="📌  Nice to meet you"
+		android:textColor="@color/black_04"
+		android:textSize="14dp"
+		android:textStyle="bold"
+		app:layout_constraintLeft_toLeftOf="parent"
+		app:layout_constraintRight_toRightOf="parent"
+		app:layout_constraintTop_toBottomOf="@+id/textViewHello" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

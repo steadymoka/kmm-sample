@@ -1,0 +1,2 @@
+include(":androidApp")
+include(":shared")
