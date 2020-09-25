@@ -27,7 +27,7 @@ val networkModule = DI.Module("network") {
                 headers = mapOf(
                     "Accept" to "application/json",
                     "Content-Type" to "application/json",
-                    "Authorization" to "Bearer ${BuildKonfig.apiKey}",
+                    "Authorization" to "Bearer ${BuildKonfig.apiKey.replace("\"", "")}",
                 )
             )
         )
