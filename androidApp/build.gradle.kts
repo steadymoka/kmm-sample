@@ -9,7 +9,7 @@ android {
     compileSdkVersion(29)
 
     defaultConfig {
-        applicationId = "moka.land.androidApp"
+        applicationId = "land.moka.androidApp"
         minSdkVersion(24)
         targetSdkVersion(29)
         versionCode = 1
@@ -25,7 +25,6 @@ android {
             isMinifyEnabled = false
         }
     }
-
     tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile::class.java).all {
         kotlinOptions {
             jvmTarget = "1.8"
@@ -64,11 +63,7 @@ dependencies {
     // moka
     implementation("com.github.moka-a.mokaroid:base:0.4.35")
 
-    /* Koin */
-    implementation("org.koin:koin-androidx-viewmodel:1.0.2")
-    implementation("org.koin:koin-androidx-scope:1.0.2")
-
-    // glide
+    // glide - imageLoader
     implementation("com.github.bumptech.glide:glide:4.10.0")
 
 }

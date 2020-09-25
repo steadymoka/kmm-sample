@@ -4,14 +4,7 @@ plugins {
     kotlin("multiplatform")
     id("com.android.library")
     id("kotlin-android-extensions")
-    id("com.apollographql.apollo")
-}
-
-repositories {
-    gradlePluginPortal()
-    google()
-    jcenter()
-    mavenCentral()
+    id("com.apollographql.apollo") version "2.3.1"
 }
 
 kotlin {
@@ -24,17 +17,24 @@ kotlin {
         }
     }
     sourceSets {
-//        commonMain {
-//            dependencies {
-//                implementation("com.apollographql.apollo:apollo-runtime-kotlin:1.3.3")
-//            }
-//        }
+        val commonMain by getting {
+            dependencies {
+                implementation("com.apollographql.apollo:apollo-runtime-kotlin:2.3.1")
+                implementation("org.kodein.di:kodein-di:7.1.0")
+            }
+        }
 
-        val commonMain by getting
+        val iosMain by getting {
+            dependencies {
 
-        val iosMain by getting
+            }
+        }
 
-        val androidMain by getting
+        val androidMain by getting {
+            dependencies {
+                implementation("androidx.lifecycle:lifecycle-extensions:2.2.0")
+            }
+        }
 
         val commonTest by getting {
             dependencies {
@@ -43,7 +43,11 @@ kotlin {
             }
         }
 
-        val iosTest by getting
+        val iosTest by getting {
+            dependencies {
+
+            }
+        }
 
         val androidTest by getting {
             dependencies {
@@ -70,6 +74,12 @@ android {
     }
 }
 
+tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile::class.java).all {
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+}
+
 val packForXcode by tasks.creating(Sync::class) {
     group = "build"
     val mode = System.getenv("CONFIGURATION") ?: "DEBUG"
@@ -82,5 +92,4 @@ val packForXcode by tasks.creating(Sync::class) {
     from({ framework.outputDirectory })
     into(targetDir)
 }
-
 tasks.getByName("build").dependsOn(packForXcode)

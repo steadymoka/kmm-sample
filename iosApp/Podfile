@@ -1,0 +1,12 @@
+use_frameworks!
+
+target 'iosApp' do
+
+  target 'iosAppTests' do
+    inherit! :search_paths
+  end
+
+  target 'iosAppUITests' do
+  end
+
+end

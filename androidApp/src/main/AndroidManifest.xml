@@ -1,15 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest
     xmlns:android="http://schemas.android.com/apk/res/android"
-    package="moka.land.androidApp">
+    package="land.moka.androidApp">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_MEDIA_LOCATION" />
 
     <application
-        android:name="moka.land.kmm.androidApp._Application"
+        android:name="land.moka.kmm.androidApp._Application"
         android:allowBackup="false"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name="moka.land.kmm.androidApp.ui.main.MainNavGraph">
+        <activity android:name="land.moka.kmm.androidApp.ui.main.MainNavGraph">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -5,7 +5,7 @@
 
 	<fragment
 		android:id="@+id/start"
-		android:name="moka.land.kmm.androidApp.ui.main._BlankFragment"
+		android:name="land.moka.kmm.androidApp.ui.main._BlankFragment"
 		android:label="start">
 
 		<action
@@ -19,7 +19,7 @@
 
 	<fragment
 		android:id="@+id/repository"
-		android:name="moka.land.kmm.androidApp.ui.repository.RepositoryLayout"
+		android:name="land.moka.kmm.androidApp.ui.repository.RepositoryLayout"
 		android:label="repository">
 
 		<argument
