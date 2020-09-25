@@ -1,11 +1,11 @@
-name: CI
-
-on: []
-
-jobs:
-  build:
-    runs-on: macos-latest
-    steps:
-    - uses: actions/checkout@v1
-    - name: Build the project
-      run: ./gradlew assemble
+#name: CI
+#
+#on: []
+#
+#jobs:
+#  build:
+#    runs-on: macos-latest
+#    steps:
+#    - uses: actions/checkout@v1
+#    - name: Build the project
+#      run: ./gradlew assemble

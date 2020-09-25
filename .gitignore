@@ -5,3 +5,5 @@ build/
 .DS_STORE
 local.properties
 *.hprof
+
+/shared/apikey.properties

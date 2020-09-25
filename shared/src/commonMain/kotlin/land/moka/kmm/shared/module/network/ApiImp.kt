@@ -3,24 +3,12 @@ package land.moka.kmm.shared.module.network
 import com.apollographql.apollo.*
 import com.apollographql.apollo.api.ApolloExperimental
 import com.apollographql.apollo.api.Input
-import com.apollographql.apollo.network.http.ApolloHttpNetworkTransport
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.single
-import org.kodein.di.DI
-import org.kodein.di.DIAware
 
+@ExperimentalCoroutinesApi
 @ApolloExperimental
-class ApiImp() : Api {
-
-    private val apolloClient = ApolloClient(
-        networkTransport = ApolloHttpNetworkTransport(
-            serverUrl = "https://api.github.com/graphql",
-            headers = mapOf(
-                "Accept" to "application/json",
-                "Content-Type" to "application/json",
-                "Authorization" to "Bearer edd4db46ed6b8b63b0fdd1d53ec78e9082684cc8",
-            )
-        )
-    )
+class ApiImp(var apolloClient: ApolloClient) : Api {
 
     override suspend fun queryAboutMoka(): AboutMokaQuery.Data {
         val query = AboutMokaQuery()
@@ -32,6 +20,7 @@ class ApiImp() : Api {
             throw Error()
         }
         catch (e: Exception) {
+            e.printStackTrace()
             throw Error()
         }
     }
@@ -46,6 +35,7 @@ class ApiImp() : Api {
             throw Error()
         }
         catch (e: Exception) {
+            e.printStackTrace()
             throw Error()
         }
     }
@@ -60,6 +50,7 @@ class ApiImp() : Api {
             throw Error()
         }
         catch (e: Exception) {
+            e.printStackTrace()
             throw Error()
         }
     }

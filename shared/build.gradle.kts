@@ -1,10 +1,26 @@
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
+import java.io.FileInputStream
+import java.util.*
+import com.codingfeline.buildkonfig.compiler.FieldSpec.Type
 
 plugins {
     kotlin("multiplatform")
     id("com.android.library")
     id("kotlin-android-extensions")
     id("com.apollographql.apollo") version "2.3.1"
+    id("com.codingfeline.buildkonfig")
+
+}
+
+val apiKeyProperties = Properties()
+try {
+    val apiKeyPropertiesFile = rootProject.file("shared/apikey.properties")
+    apiKeyProperties.load(FileInputStream(apiKeyPropertiesFile))
+}
+catch (e: Exception) {
+    val apiKeyPropertiesFile = rootProject.file("shared/apikey.properties.sample")
+    apiKeyProperties.load(FileInputStream(apiKeyPropertiesFile))
+    e.printStackTrace()
 }
 
 kotlin {
@@ -14,6 +30,13 @@ kotlin {
             framework {
                 baseName = "shared"
             }
+        }
+    }
+    buildkonfig {
+        packageName = "land.moka.kmm"
+
+        defaultConfigs {
+            buildConfigField(Type.STRING, "apiKey", apiKeyProperties["apikey"].toString())
         }
     }
     sourceSets {

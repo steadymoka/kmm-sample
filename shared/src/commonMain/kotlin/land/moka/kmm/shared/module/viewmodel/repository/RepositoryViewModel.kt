@@ -2,7 +2,6 @@ package land.moka.kmm.shared.module.viewmodel.repository
 
 import com.apollographql.apollo.ApolloHttpException
 import com.apollographql.apollo.ApolloNetworkException
-import kotlinx.coroutines.delay
 import land.moka.kmm.shared.lib.livedata.MutableLiveData
 import land.moka.kmm.shared.model.Repository
 import land.moka.kmm.shared.module.network.Api
