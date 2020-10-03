@@ -8,12 +8,13 @@ struct ContentView: View {
             HomeView()
                 .tabItem {
                     Image(systemName: "aa")
+                    Text("Home")
                 }
             
             ProfileView()
                 .tabItem {
                     Image(systemName: "aa")
-                    Text("ac")
+                    Text("Profile")
                 }
         }
     }

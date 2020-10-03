@@ -23,7 +23,7 @@ val networkModule = DI.Module("network") {
     bind<ApolloClient>() with singleton {
         ApolloClient(
             networkTransport = ApolloHttpNetworkTransport(
-                serverUrl = "https://api.github.com/graphql",
+                serverUrl = "https://domain/graphql",
                 headers = mapOf(
                     "Accept" to "application/json",
                     "Content-Type" to "application/json",
