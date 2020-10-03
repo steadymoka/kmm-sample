@@ -7,7 +7,7 @@ plugins {
     kotlin("multiplatform")
     id("com.android.library")
     id("kotlin-android-extensions")
-    id("com.apollographql.apollo") version "2.3.1"
+    id("com.apollographql.apollo") version "2.4.0"
     id("com.codingfeline.buildkonfig")
 
 }
@@ -42,7 +42,7 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                implementation("com.apollographql.apollo:apollo-runtime-kotlin:2.3.1")
+                implementation("com.apollographql.apollo:apollo-runtime-kotlin:2.4.0")
                 implementation("org.kodein.di:kodein-di:7.1.0")
             }
         }
