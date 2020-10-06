@@ -1,28 +1,25 @@
 import SwiftUI
 import shared
 
-struct ContentView: View {
+struct MainView: View {
 
     var body: some View {
         TabView {
             HomeView()
                 .tabItem {
-                    Image(systemName: "aa")
+                    Image("ic_home")
                 }
             
             ProfileView()
                 .tabItem {
-                    Image(systemName: "aa")
-                    Text("ac")
+                    Image("ic_profile")
                 }
         }
     }
 }
 
-#if DEBUG
-struct ContentView_Previews: PreviewProvider {
+struct MainView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
+        MainView()
     }
 }
-#endif
