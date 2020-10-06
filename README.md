@@ -4,7 +4,7 @@ This is a **Kotlin Multiplatform Mobile (KMM) Project**. It includes iOS and And
 
 ## Features
 
-Get data from Github Graph Api
+Get my profile information from github api (graphQL). (You should Github API key to `/apikey.properties` file)
 
 ## Related links
 
