@@ -5,8 +5,8 @@ import com.codingfeline.buildkonfig.compiler.FieldSpec.Type
 
 plugins {
     kotlin("multiplatform")
+    kotlin("native.cocoapods")
     id("com.android.library")
-    id("kotlin-android-extensions")
     id("com.apollographql.apollo") version "2.4.1"
     id("com.codingfeline.buildkonfig")
 }
@@ -21,15 +21,17 @@ catch (e: Exception) {
     apiKeyProperties.load(FileInputStream(apiKeyPropertiesFile))
     e.printStackTrace()
 }
+version = "1.0.0"
 
 kotlin {
     android()
-    ios {
-        binaries {
-            framework {
-                baseName = "shared"
-            }
-        }
+    ios()
+    cocoapods {
+        summary = "pod shared"
+        homepage = "https://github.com/moka-a/kmm-sample"
+        podfile = project.file("../iosApp/Podfile")
+
+        ios.deploymentTarget = "14.0"
     }
     buildkonfig {
         packageName = "land.moka.kmm"

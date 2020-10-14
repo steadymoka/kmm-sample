@@ -6,4 +6,5 @@ build/
 local.properties
 *.hprof
 
+/shared/build
 /shared/apikey.properties

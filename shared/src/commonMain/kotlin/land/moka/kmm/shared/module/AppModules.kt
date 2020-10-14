@@ -7,6 +7,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import land.moka.kmm.BuildKonfig
 import land.moka.kmm.shared.module.network.Api
 import land.moka.kmm.shared.module.network.ApiImp
+import land.moka.kmm.shared.module.network.ErrorHandler
 import org.kodein.di.DI
 import org.kodein.di.bind
 import org.kodein.di.instance
@@ -20,6 +21,9 @@ fun appModule() = DI.Module("appModule") {
 @ExperimentalCoroutinesApi
 @ApolloExperimental
 val networkModule = DI.Module("network") {
+    bind<ErrorHandler>() with singleton {
+        ErrorHandler()
+    }
     bind<ApolloClient>() with singleton {
         ApolloClient(
             networkTransport = ApolloHttpNetworkTransport(
@@ -32,7 +36,7 @@ val networkModule = DI.Module("network") {
             )
         )
     }
-    bind<Api>() with singleton { ApiImp(instance()) }
+    bind<Api>() with singleton { ApiImp(instance(), instance()) }
 }
 
 val databaseModule = DI.Module("database") {
