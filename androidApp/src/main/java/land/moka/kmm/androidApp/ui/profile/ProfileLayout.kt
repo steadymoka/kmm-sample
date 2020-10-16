@@ -26,12 +26,7 @@ import moka.land.base.goneFadeOut
 import moka.land.base.visible
 import moka.land.base.visibleFadeIn
 
-
 class ProfileLayout : Fragment() {
-
-    init {
-        ProfileScope.onCreate()
-    }
 
     private val _view by lazy { LayoutProfileBinding.inflate(layoutInflater) }
 
@@ -41,7 +36,10 @@ class ProfileLayout : Fragment() {
     private val repositoryAdapter by lazy { RepositoryAdapter() }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        init()
+        super.onCreateView(inflater, container, savedInstanceState)
+        ProfileScope.onCreate()
+
+        initLayout()
         bindEvent()
         bindViewModel()
 
@@ -56,7 +54,7 @@ class ProfileLayout : Fragment() {
         super.onDestroy()
     }
 
-    private fun init() {
+    private fun initLayout() {
         viewModel.selectedTab.value = ProfileViewModel.Tab.Overview
 
         _view.recyclerViewOverview.showPlaceHolder(R.layout.view_overview_placeholder)

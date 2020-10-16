@@ -15,16 +15,15 @@ import land.moka.kmm.shared.di.scope.RepositoryScope
 
 class RepositoryLayout : Fragment() {
 
-    init {
-        RepositoryScope.onCreate()
-    }
-
     private val _view by lazy { LayoutRepositoryBinding.inflate(layoutInflater) }
     private val viewModel by lazy { AppContainer.repositoryContainer!!.viewModel }
     private val args: RepositoryLayoutArgs by navArgs()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        initView()
+        super.onCreateView(inflater, container, savedInstanceState)
+        RepositoryScope.onCreate()
+
+        initLayout()
         bindEvent()
         bindViewModel()
 
@@ -39,7 +38,7 @@ class RepositoryLayout : Fragment() {
         super.onDestroy()
     }
 
-    private fun initView() {
+    private fun initLayout() {
         _view.textViewName.text = " "
         _view.textViewDescription.text = " "
     }
