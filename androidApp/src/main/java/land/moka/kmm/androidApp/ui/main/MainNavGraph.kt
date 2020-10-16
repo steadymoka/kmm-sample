@@ -12,9 +12,6 @@ class MainNavGraph : AppCompatActivity() {
 
     private val _view: NavigationMainBinding by lazy { NavigationMainBinding.inflate(layoutInflater) }
 
-    private val host by lazy { supportFragmentManager.findFragmentById(R.id.host) as NavHostFragment }
-    private val navController by lazy { host.navController }
-
     private val adapter by lazy { MainPagerAdapter(this) }
 
     private val homeLayout by lazy { HomeLayout() }

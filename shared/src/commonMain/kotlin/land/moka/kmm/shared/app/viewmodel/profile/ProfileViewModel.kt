@@ -2,9 +2,11 @@ package land.moka.kmm.shared.app.viewmodel.profile
 
 import com.apollographql.apollo.ApolloNetworkException
 import com.apollographql.apollo.exception.ApolloException
+import kotlinx.coroutines.channels.BroadcastChannel
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.asFlow
+import kotlinx.coroutines.flow.first
 import land.moka.kmm.shared.lib.livedata.MutableLiveData
-import land.moka.kmm.shared.lib.livedata.util.addValues
 import land.moka.kmm.shared.model.Organizer
 import land.moka.kmm.shared.model.Pinned
 import land.moka.kmm.shared.model.Profile
@@ -33,30 +35,33 @@ class ProfileViewModel(private val api: Api) : ViewModel {
 
     val selectedTab = MutableLiveData(Tab.Overview)
 
-    val profile = MutableLiveData(Profile.init())
+    private val _profileObservable = BroadcastChannel<Profile>(1)
+    val profileObservable get() = _profileObservable.asFlow()
 
     var pinnedList = MutableLiveData<List<Pinned>>(listOf())
 
     var organizerList = MutableLiveData<List<Organizer>>(listOf())
 
-    var myRepositoryList = MutableLiveData<ArrayList<Repository>>(arrayListOf())
+    private val _myRepositoryList = BroadcastChannel<ArrayList<Repository>?>(1)
+    val myRepositoryList get() = _myRepositoryList.asFlow()
 
     private var endCursorOfMyRepositories: String? = null
 
     suspend fun loadProfileData() {
         delay(1000) // to checking placeHolder
         val res = api.queryAboutMoka()
-        val profile = res.search
+        val profileRes = res.search
             .edges
             ?.getOrNull(0)
             ?.node
             ?.asUser
-        if (null != profile) {
-            this.profile.value = Profile(
-                name = profile.name ?: "",
-                avatarUrl = profile.avatarUrl.toString(),
-                bio = profile.bio ?: "",
-                status = Profile.Status(profile.status?.message ?: ""))
+        if (null != profileRes) {
+            val profile = Profile(
+                name = profileRes.name ?: "",
+                avatarUrl = profileRes.avatarUrl.toString(),
+                bio = profileRes.bio ?: "",
+                status = Profile.Status(profileRes.status?.message ?: ""))
+            this._profileObservable.offer(profile)
         }
 
         pinnedList.value = (res
@@ -117,7 +122,7 @@ class ProfileViewModel(private val api: Api) : ViewModel {
                 }
 
             loading.value = false
-            myRepositoryList.addValues(repositories as ArrayList<Repository>)
+            _myRepositoryList.offer(repositories as ArrayList<Repository>)
             error.value = Error.NOPE
         }
         catch (e: ApolloNetworkException) {
@@ -128,6 +133,10 @@ class ProfileViewModel(private val api: Api) : ViewModel {
             loading.value = false
             error.value = Error.SERVER
         }
+    }
+
+    fun clearMyRepository() {
+        _myRepositoryList.offer(null)
     }
 
     suspend fun reloadRepositories() {
