@@ -1,4 +1,4 @@
-package land.moka.kmm.shared.module.network
+package land.moka.kmm.shared.app.network
 
 import com.apollographql.apollo.*
 import com.apollographql.apollo.api.ApolloExperimental

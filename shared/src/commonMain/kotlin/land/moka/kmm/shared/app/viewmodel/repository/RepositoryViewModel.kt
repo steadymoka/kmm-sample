@@ -1,11 +1,11 @@
-package land.moka.kmm.shared.module.viewmodel.repository
+package land.moka.kmm.shared.app.viewmodel.repository
 
 import com.apollographql.apollo.ApolloHttpException
 import com.apollographql.apollo.ApolloNetworkException
 import land.moka.kmm.shared.lib.livedata.MutableLiveData
 import land.moka.kmm.shared.model.Repository
-import land.moka.kmm.shared.module.network.Api
-import land.moka.kmm.shared.module.viewmodel.ViewModel
+import land.moka.kmm.shared.app.network.Api
+import land.moka.kmm.shared.app.viewmodel.ViewModel
 
 class RepositoryViewModel(private val api: Api) : ViewModel {
 

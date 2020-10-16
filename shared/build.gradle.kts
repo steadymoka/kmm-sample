@@ -47,32 +47,27 @@ kotlin {
                 implementation("org.kodein.di:kodein-di:7.1.0")
             }
         }
-
         val iosMain by getting {
             dependencies {
 
             }
         }
-
         val androidMain by getting {
             dependencies {
                 implementation("androidx.lifecycle:lifecycle-extensions:2.2.0")
             }
         }
-
         val commonTest by getting {
             dependencies {
                 implementation(kotlin("test-common"))
                 implementation(kotlin("test-annotations-common"))
             }
         }
-
         val iosTest by getting {
             dependencies {
 
             }
         }
-
         val androidTest by getting {
             dependencies {
                 implementation(kotlin("test-junit"))

@@ -1,4 +1,4 @@
-package land.moka.kmm.shared.module.viewmodel.profile
+package land.moka.kmm.shared.app.viewmodel.profile
 
 import com.apollographql.apollo.ApolloNetworkException
 import com.apollographql.apollo.exception.ApolloException
@@ -9,8 +9,8 @@ import land.moka.kmm.shared.model.Organizer
 import land.moka.kmm.shared.model.Pinned
 import land.moka.kmm.shared.model.Profile
 import land.moka.kmm.shared.model.Repository
-import land.moka.kmm.shared.module.network.Api
-import land.moka.kmm.shared.module.viewmodel.ViewModel
+import land.moka.kmm.shared.app.network.Api
+import land.moka.kmm.shared.app.viewmodel.ViewModel
 
 
 class ProfileViewModel(private val api: Api) : ViewModel {

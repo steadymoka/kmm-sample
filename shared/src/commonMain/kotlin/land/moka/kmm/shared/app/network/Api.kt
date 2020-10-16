@@ -1,4 +1,4 @@
-package land.moka.kmm.shared.module.network
+package land.moka.kmm.shared.app.network
 
 import com.apollographql.apollo.AboutMokaQuery
 import com.apollographql.apollo.GetRepositoryQuery

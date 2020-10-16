@@ -18,8 +18,9 @@ import land.moka.kmm.androidApp.ui.profile.adapter.OverviewAdapter
 import land.moka.kmm.androidApp.ui.profile.adapter.RepositoryAdapter
 import land.moka.kmm.androidApp.util.load
 import land.moka.kmm.shared.lib.livedata.combineWith
-import land.moka.kmm.shared.module.KodeinApp
-import land.moka.kmm.shared.module.viewmodel.profile.ProfileViewModel
+import land.moka.kmm.shared.di.AppContainer
+import land.moka.kmm.shared.app.viewmodel.profile.ProfileViewModel
+import land.moka.kmm.shared.di.scope.ProfileScope
 import moka.land.base.gone
 import moka.land.base.goneFadeOut
 import moka.land.base.visible
@@ -28,9 +29,13 @@ import moka.land.base.visibleFadeIn
 
 class ProfileLayout : Fragment() {
 
+    init {
+        ProfileScope.onCreate()
+    }
+
     private val _view by lazy { LayoutProfileBinding.inflate(layoutInflater) }
 
-    private val viewModel: ProfileViewModel by lazy { KodeinApp.getProfileViewModel() }
+    private val viewModel: ProfileViewModel by lazy { AppContainer.profileContainer!!.viewModel }
 
     private val overviewAdapter by lazy { OverviewAdapter() }
     private val repositoryAdapter by lazy { RepositoryAdapter() }
@@ -47,7 +52,7 @@ class ProfileLayout : Fragment() {
     }
 
     override fun onDestroy() {
-        KodeinApp.removeProfileViewModel()
+        ProfileScope.onDestroy()
         super.onDestroy()
     }
 
@@ -173,8 +178,7 @@ class ProfileLayout : Fragment() {
                 ProfileViewModel.Tab.Repositories -> {
                     if (it) {
                         repositoryAdapter.showFooterLoading()
-                    }
-                    else {
+                    } else {
                         repositoryAdapter.hideFooterLoading()
                     }
                 }

@@ -10,13 +10,17 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import kotlinx.coroutines.launch
 import land.moka.androidApp.databinding.LayoutRepositoryBinding
-import land.moka.kmm.shared.module.KodeinApp
-import moka.land.base.log
+import land.moka.kmm.shared.di.AppContainer
+import land.moka.kmm.shared.di.scope.RepositoryScope
 
 class RepositoryLayout : Fragment() {
 
+    init {
+        RepositoryScope.onCreate()
+    }
+
     private val _view by lazy { LayoutRepositoryBinding.inflate(layoutInflater) }
-    private val viewModel by lazy { KodeinApp.getRepositoryViewModel() }
+    private val viewModel by lazy { AppContainer.repositoryContainer!!.viewModel }
     private val args: RepositoryLayoutArgs by navArgs()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -31,7 +35,7 @@ class RepositoryLayout : Fragment() {
     }
 
     override fun onDestroy() {
-        KodeinApp.removeRepositoryViewModel()
+        RepositoryScope.onDestroy()
         super.onDestroy()
     }
 
@@ -51,8 +55,7 @@ class RepositoryLayout : Fragment() {
             if (null != repo) {
                 _view.textViewName.text = "\uD83D\uDCD3 ${repo.name}"
                 _view.textViewDescription.text = repo.description
-            }
-            else {
+            } else {
                 _view.textViewName.text = "삭제된 저장소입니다."
                 _view.textViewDescription.text = "-"
             }

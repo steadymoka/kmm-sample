@@ -1,4 +1,4 @@
-package land.moka.kmm.shared.module.layout
+package land.moka.kmm.shared.app.layout
 
 class Layout {
 
