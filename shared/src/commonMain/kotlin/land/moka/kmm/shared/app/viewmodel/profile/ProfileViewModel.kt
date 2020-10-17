@@ -5,13 +5,12 @@ import com.apollographql.apollo.exception.ApolloException
 import kotlinx.coroutines.channels.BroadcastChannel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.asFlow
-import land.moka.kmm.shared.lib.livedata.MutableLiveData
+import land.moka.kmm.shared.app.network.Api
+import land.moka.kmm.shared.app.viewmodel.ViewModel
 import land.moka.kmm.shared.model.Organizer
 import land.moka.kmm.shared.model.Pinned
 import land.moka.kmm.shared.model.Profile
 import land.moka.kmm.shared.model.Repository
-import land.moka.kmm.shared.app.network.Api
-import land.moka.kmm.shared.app.viewmodel.ViewModel
 
 class ProfileViewModel(private val api: Api) : ViewModel {
 

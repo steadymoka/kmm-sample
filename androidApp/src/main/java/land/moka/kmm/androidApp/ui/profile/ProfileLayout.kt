@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.tabs.TabLayout
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.single
 import kotlinx.coroutines.flow.zip
 import kotlinx.coroutines.launch
 import land.moka.androidApp.R
@@ -21,7 +20,6 @@ import land.moka.kmm.androidApp.ui.main._BlankFragmentDirections
 import land.moka.kmm.androidApp.ui.profile.adapter.OverviewAdapter
 import land.moka.kmm.androidApp.ui.profile.adapter.RepositoryAdapter
 import land.moka.kmm.androidApp.util.load
-import land.moka.kmm.shared.lib.livedata.combineWith
 import land.moka.kmm.shared.di.AppContainer
 import land.moka.kmm.shared.app.viewmodel.profile.ProfileViewModel
 import land.moka.kmm.shared.di.scope.ProfileScope

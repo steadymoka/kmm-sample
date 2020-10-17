@@ -2,7 +2,8 @@ package land.moka.kmm.shared.app.viewmodel.repository
 
 import com.apollographql.apollo.ApolloHttpException
 import com.apollographql.apollo.ApolloNetworkException
-import land.moka.kmm.shared.lib.livedata.MutableLiveData
+import kotlinx.coroutines.channels.BroadcastChannel
+import kotlinx.coroutines.flow.asFlow
 import land.moka.kmm.shared.model.Repository
 import land.moka.kmm.shared.app.network.Api
 import land.moka.kmm.shared.app.viewmodel.ViewModel
@@ -13,17 +14,20 @@ class RepositoryViewModel(private val api: Api) : ViewModel {
         CONNECTION, SERVER, NOPE
     }
 
-    var loading = MutableLiveData(true)
+    private val _loading = BroadcastChannel<Boolean>(1)
+    val loading get() = _loading.asFlow()
 
-    var error = MutableLiveData(Error.NOPE)
+    private val _error = BroadcastChannel<Error>(1)
+    val error get() = _error.asFlow()
 
-    var repository = MutableLiveData<Repository?>(null)
+    private val _repository = BroadcastChannel<Repository?>(1)
+    val repository get() = _repository.asFlow()
 
     //
 
     suspend fun loadRepository(name: String) {
         try {
-            loading.value = true
+            _loading.offer(true)
 
             val res = api.queryRepository(name)
             val repo = (res
@@ -33,23 +37,23 @@ class RepositoryViewModel(private val api: Api) : ViewModel {
                 ?.node
                 ?.asUser)
                 ?.repository
-            repository.value = if (null == repo) {
+            val repository = if (null == repo) {
                 null
-            }
-            else {
+            } else {
                 Repository(repo.name, repo.description ?: "")
             }
+            _repository.offer(repository)
 
-            error.value = Error.NOPE
+            _error.offer(Error.NOPE)
         }
         catch (e: ApolloNetworkException) {
-            error.value = Error.CONNECTION
+            _error.offer(Error.CONNECTION)
         }
         catch (e: ApolloHttpException) {
-            error.value = Error.SERVER
+            _error.offer(Error.SERVER)
         }
         finally {
-            loading.value = false
+            _loading.offer(false)
         }
     }
 

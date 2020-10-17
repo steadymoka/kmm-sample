@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import land.moka.androidApp.databinding.LayoutRepositoryBinding
 import land.moka.kmm.shared.di.AppContainer
@@ -50,13 +51,15 @@ class RepositoryLayout : Fragment() {
     }
 
     private fun bindViewModel() {
-        viewModel.repository.addObserver { repo ->
-            if (null != repo) {
-                _view.textViewName.text = "\uD83D\uDCD3 ${repo.name}"
-                _view.textViewDescription.text = repo.description
-            } else {
-                _view.textViewName.text = "삭제된 저장소입니다."
-                _view.textViewDescription.text = "-"
+        lifecycleScope.launch {
+            viewModel.repository.collect { repo ->
+                if (null != repo) {
+                    _view.textViewName.text = "\uD83D\uDCD3 ${repo.name}"
+                    _view.textViewDescription.text = repo.description
+                } else {
+                    _view.textViewName.text = "삭제된 저장소입니다."
+                    _view.textViewDescription.text = "-"
+                }
             }
         }
     }
