@@ -5,7 +5,6 @@ import com.apollographql.apollo.exception.ApolloException
 import kotlinx.coroutines.channels.BroadcastChannel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.asFlow
-import kotlinx.coroutines.flow.first
 import land.moka.kmm.shared.lib.livedata.MutableLiveData
 import land.moka.kmm.shared.model.Organizer
 import land.moka.kmm.shared.model.Pinned
@@ -13,7 +12,6 @@ import land.moka.kmm.shared.model.Profile
 import land.moka.kmm.shared.model.Repository
 import land.moka.kmm.shared.app.network.Api
 import land.moka.kmm.shared.app.viewmodel.ViewModel
-
 
 class ProfileViewModel(private val api: Api) : ViewModel {
 
@@ -29,18 +27,23 @@ class ProfileViewModel(private val api: Api) : ViewModel {
         }
     }
 
-    var loading = MutableLiveData(true)
+    private val _loading = BroadcastChannel<Boolean>(1)
+    val loading get() = _loading.asFlow()
 
-    var error = MutableLiveData(Error.NOPE)
+    private val _error = BroadcastChannel<Error>(1)
+    val error get() = _error.asFlow()
 
-    val selectedTab = MutableLiveData(Tab.Overview)
+    private val _selectedTab = BroadcastChannel<Tab>(1)
+    val selectedTab get() = _selectedTab.asFlow()
 
-    private val _profileObservable = BroadcastChannel<Profile>(1)
-    val profileObservable get() = _profileObservable.asFlow()
+    private val _profile = BroadcastChannel<Profile>(1)
+    val profile get() = _profile.asFlow()
 
-    var pinnedList = MutableLiveData<List<Pinned>>(listOf())
+    private val _pinnedList = BroadcastChannel<List<Pinned>>(1)
+    val pinnedList get() = _pinnedList.asFlow()
 
-    var organizerList = MutableLiveData<List<Organizer>>(listOf())
+    private val _organizerList = BroadcastChannel<List<Organizer>>(1)
+    val organizerList get() = _organizerList.asFlow()
 
     private val _myRepositoryList = BroadcastChannel<ArrayList<Repository>?>(1)
     val myRepositoryList get() = _myRepositoryList.asFlow()
@@ -61,10 +64,10 @@ class ProfileViewModel(private val api: Api) : ViewModel {
                 avatarUrl = profileRes.avatarUrl.toString(),
                 bio = profileRes.bio ?: "",
                 status = Profile.Status(profileRes.status?.message ?: ""))
-            this._profileObservable.offer(profile)
+            this._profile.offer(profile)
         }
 
-        pinnedList.value = (res
+        val pinnedList = (res
             .search
             .edges
             ?.getOrNull(0)
@@ -79,8 +82,9 @@ class ProfileViewModel(private val api: Api) : ViewModel {
                     null
                 }
             } ?: listOf()
+        _pinnedList.offer(pinnedList)
 
-        organizerList.value = (res
+        val organizerList = (res
             .search
             .edges
             ?.getOrNull(0)
@@ -95,6 +99,7 @@ class ProfileViewModel(private val api: Api) : ViewModel {
                     null
                 }
             } ?: listOf()
+        _organizerList.offer(organizerList)
     }
 
     suspend fun loadRepositories() {
@@ -103,7 +108,7 @@ class ProfileViewModel(private val api: Api) : ViewModel {
                 return
             }
 
-            loading.value = true
+            _loading.offer(true)
             val res = api.queryMyRepositories(endCursorOfMyRepositories)
             val repositories = (res
                 .search
@@ -121,17 +126,17 @@ class ProfileViewModel(private val api: Api) : ViewModel {
                     Repository(repo?.name ?: "", repo?.description ?: "")
                 }
 
-            loading.value = false
+            _loading.offer(false)
             _myRepositoryList.offer(repositories as ArrayList<Repository>)
-            error.value = Error.NOPE
+            _error.offer(Error.NOPE)
         }
         catch (e: ApolloNetworkException) {
-            loading.value = false
-            error.value = Error.CONNECTION
+            _loading.offer(false)
+            _error.offer(Error.CONNECTION)
         }
         catch (e: ApolloException) {
-            loading.value = false
-            error.value = Error.SERVER
+            _loading.offer(false)
+            _error.offer(Error.SERVER)
         }
     }
 
@@ -142,6 +147,10 @@ class ProfileViewModel(private val api: Api) : ViewModel {
     suspend fun reloadRepositories() {
         endCursorOfMyRepositories = null
         loadRepositories()
+    }
+
+    fun selectTab(tab: Tab) {
+        _selectedTab.offer(tab)
     }
 
 }

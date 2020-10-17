@@ -10,10 +10,10 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.tabs.TabLayout
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.FlowPreview
-import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.single
+import kotlinx.coroutines.flow.zip
 import kotlinx.coroutines.launch
 import land.moka.androidApp.R
 import land.moka.androidApp.databinding.LayoutProfileBinding
@@ -57,7 +57,7 @@ class ProfileLayout : Fragment() {
     }
 
     private fun initLayout() {
-        viewModel.selectedTab.value = ProfileViewModel.Tab.Overview
+        viewModel.selectTab(ProfileViewModel.Tab.Overview)
 
         _view.recyclerViewOverview.showPlaceHolder(R.layout.view_overview_placeholder)
         _view.recyclerViewOverview.adapter = overviewAdapter
@@ -73,13 +73,13 @@ class ProfileLayout : Fragment() {
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 when (ProfileViewModel.Tab.get(tab?.position ?: 0)) {
                     ProfileViewModel.Tab.Overview -> {
-                        viewModel.selectedTab.value = ProfileViewModel.Tab.Overview
+                        viewModel.selectTab(ProfileViewModel.Tab.Overview)
                     }
                     ProfileViewModel.Tab.Repositories -> {
                         lifecycleScope.launch {
                             _view.recyclerViewRepositories.scrollToPosition(0)
 
-                            viewModel.selectedTab.value = ProfileViewModel.Tab.Repositories
+                            viewModel.selectTab(ProfileViewModel.Tab.Repositories)
                             viewModel.clearMyRepository()
                             viewModel.reloadRepositories()
                         }
@@ -93,9 +93,9 @@ class ProfileLayout : Fragment() {
                 super.onScrolled(recyclerView, dx, dy)
                 val linearLayoutManager = recyclerView.layoutManager as LinearLayoutManager
 
-                if (!viewModel.loading.value) {
-                    if (linearLayoutManager.findLastCompletelyVisibleItemPosition() >= repositoryAdapter.itemCount - 2) {
-                        lifecycleScope.launch {
+                lifecycleScope.launch {
+                    if (!viewModel.loading.first()) {
+                        if (linearLayoutManager.findLastCompletelyVisibleItemPosition() >= repositoryAdapter.itemCount - 2) {
                             viewModel.loadRepositories()
                         }
                     }
@@ -118,7 +118,7 @@ class ProfileLayout : Fragment() {
 
     private fun bindViewModel() {
         lifecycleScope.launch {
-            viewModel.profileObservable.collect {
+            viewModel.profile.collect {
                 _view.textViewName.text = it.name
                 _view.textViewBio.text = it.bio
                 _view.textViewStatus.text = "\"${it.status?.message}\""
@@ -130,39 +130,40 @@ class ProfileLayout : Fragment() {
             }
         }
 
-        viewModel.selectedTab.addObserver {
-            when (it) {
-                ProfileViewModel.Tab.Overview -> {
-                    _view.recyclerViewOverview.visibleFadeIn(150)
-                    _view.recyclerViewRepositories.goneFadeOut(150)
-                }
-                ProfileViewModel.Tab.Repositories -> {
-                    _view.recyclerViewOverview.goneFadeOut(150)
-                    _view.recyclerViewRepositories.visibleFadeIn(150)
+        lifecycleScope.launch {
+            viewModel.selectedTab.collect {
+                when (it) {
+                    ProfileViewModel.Tab.Overview -> {
+                        _view.recyclerViewOverview.visibleFadeIn(150)
+                        _view.recyclerViewRepositories.goneFadeOut(150)
+                    }
+                    ProfileViewModel.Tab.Repositories -> {
+                        _view.recyclerViewOverview.goneFadeOut(150)
+                        _view.recyclerViewRepositories.visibleFadeIn(150)
+                    }
                 }
             }
         }
 
-        combineWith(viewModel.pinnedList, viewModel.organizerList) { pinnedList, organizerList ->
-            if (null == pinnedList || null == organizerList) {
-                return@combineWith
-            }
-            _view.recyclerViewOverview.hidePlaceHolder(200)
+        lifecycleScope.launch {
+            viewModel.pinnedList.zip(viewModel.organizerList) { pinnedList, organizerList ->
+                _view.recyclerViewOverview.hidePlaceHolder(200)
 
-            val items = pinnedList
-                .asSequence()
-                .map { OverviewAdapter.Data(type = OverviewAdapter.Type.PINNED, repository = it) }
-                .plus(
-                    listOf(OverviewAdapter.Data(type = OverviewAdapter.Type.ORGANIZER_SECTION))
-                )
-                .plus(
-                    organizerList
-                        .map { OverviewAdapter.Data(type = OverviewAdapter.Type.ORGANIZER, organizer = it) }
-                        .toList()
-                )
-                .toList()
-            overviewAdapter.setItems(items)
-        }.addObserver { }
+                val items = pinnedList
+                    .asSequence()
+                    .map { OverviewAdapter.Data(type = OverviewAdapter.Type.PINNED, repository = it) }
+                    .plus(
+                        listOf(OverviewAdapter.Data(type = OverviewAdapter.Type.ORGANIZER_SECTION))
+                    )
+                    .plus(
+                        organizerList
+                            .map { OverviewAdapter.Data(type = OverviewAdapter.Type.ORGANIZER, organizer = it) }
+                            .toList()
+                    )
+                    .toList()
+                overviewAdapter.setItems(items)
+            }.collect { }
+        }
 
         lifecycleScope.launch {
             viewModel.myRepositoryList.collect { repoList: ArrayList<Repository>? ->
@@ -176,36 +177,40 @@ class ProfileLayout : Fragment() {
             }
         }
 
-        viewModel.loading.addObserver {
-            when (viewModel.selectedTab.value) {
-                ProfileViewModel.Tab.Overview -> {
-                }
-                ProfileViewModel.Tab.Repositories -> {
-                    if (it) {
-                        repositoryAdapter.showFooterLoading()
-                    } else {
-                        repositoryAdapter.hideFooterLoading()
+        lifecycleScope.launch {
+            viewModel.loading.collect {
+                when (ProfileViewModel.Tab.get(_view.tabLayout.selectedTabPosition)) {
+                    ProfileViewModel.Tab.Overview -> {
+                    }
+                    ProfileViewModel.Tab.Repositories -> {
+                        if (it) {
+                            repositoryAdapter.showFooterLoading()
+                        } else {
+                            repositoryAdapter.hideFooterLoading()
+                        }
                     }
                 }
             }
         }
 
-        viewModel.error.addObserver {
-            when (it) {
-                ProfileViewModel.Error.CONNECTION -> {
-                    _view.recyclerViewOverview.hidePlaceHolder(200)
+        lifecycleScope.launch {
+            viewModel.error.collect {
+                when (it) {
+                    ProfileViewModel.Error.CONNECTION -> {
+                        _view.recyclerViewOverview.hidePlaceHolder(200)
 
-                    _view.textViewError.visible()
-                    _view.textViewError.text = "인터넷 연결을 확인해주세요 :D"
-                }
-                ProfileViewModel.Error.SERVER -> {
-                    _view.recyclerViewOverview.hidePlaceHolder(200)
+                        _view.textViewError.visible()
+                        _view.textViewError.text = "인터넷 연결을 확인해주세요 :D"
+                    }
+                    ProfileViewModel.Error.SERVER -> {
+                        _view.recyclerViewOverview.hidePlaceHolder(200)
 
-                    _view.textViewError.visible()
-                    _view.textViewError.text = "예상치 못한 에러입니다 :(\n\napikey.properties 파일의 GitHub api key 를 확인해주세요\nread:org 권한을 포함 하여야 합니다."
-                }
-                ProfileViewModel.Error.NOPE -> {
-                    _view.textViewError.gone()
+                        _view.textViewError.visible()
+                        _view.textViewError.text = "예상치 못한 에러입니다 :(\n\napikey.properties 파일의 GitHub api key 를 확인해주세요\nread:org 권한을 포함 하여야 합니다."
+                    }
+                    ProfileViewModel.Error.NOPE -> {
+                        _view.textViewError.gone()
+                    }
                 }
             }
         }
