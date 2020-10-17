@@ -144,13 +144,13 @@ class ProfileViewModel(private val api: Api) : ViewModel {
         _myRepositoryList.offer(null)
     }
 
+    fun selectTab(tab: Tab) {
+        _selectedTab.offer(tab)
+    }
+
     suspend fun reloadRepositories() {
         endCursorOfMyRepositories = null
         loadRepositories()
-    }
-
-    fun selectTab(tab: Tab) {
-        _selectedTab.offer(tab)
     }
 
 }
