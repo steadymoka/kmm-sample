@@ -34,6 +34,6 @@ val networkModule = DI.Module("network") {
         )
     }
     bind<Api>() with singleton {
-        ApiImp(instance(), instance())
+        ApiImp(instance())
     }
 }

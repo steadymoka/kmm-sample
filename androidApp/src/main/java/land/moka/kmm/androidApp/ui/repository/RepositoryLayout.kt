@@ -11,18 +11,21 @@ import androidx.navigation.fragment.navArgs
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import land.moka.androidApp.databinding.LayoutRepositoryBinding
+import land.moka.kmm.androidApp._Application
+import land.moka.kmm.shared.app.viewmodel.profile.ProfileViewModel
+import land.moka.kmm.shared.app.viewmodel.repository.RepositoryViewModel
 import land.moka.kmm.shared.di.AppContainer
 import land.moka.kmm.shared.di.scope.RepositoryScope
 
 class RepositoryLayout : Fragment() {
 
     private val _view by lazy { LayoutRepositoryBinding.inflate(layoutInflater) }
-    private val viewModel by lazy { AppContainer.repositoryContainer!!.viewModel }
+    private val viewModel: RepositoryViewModel by lazy { _Application.container.repositoryContainer!!.viewModel }
     private val args: RepositoryLayoutArgs by navArgs()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         super.onCreateView(inflater, container, savedInstanceState)
-        RepositoryScope.onCreate()
+        RepositoryScope().onCreate(_Application.container)
 
         initLayout()
         bindEvent()
@@ -35,7 +38,7 @@ class RepositoryLayout : Fragment() {
     }
 
     override fun onDestroy() {
-        RepositoryScope.onDestroy()
+        RepositoryScope().onDestroy(_Application.container)
         super.onDestroy()
     }
 

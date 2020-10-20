@@ -2,17 +2,21 @@ package land.moka.kmm.shared.app.viewmodel.profile
 
 import com.apollographql.apollo.ApolloNetworkException
 import com.apollographql.apollo.exception.ApolloException
+import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.BroadcastChannel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.asFlow
 import land.moka.kmm.shared.app.network.Api
 import land.moka.kmm.shared.app.viewmodel.ViewModel
+import land.moka.kmm.shared.lib.log.Log
+import land.moka.kmm.shared.lib.util.delayExt
 import land.moka.kmm.shared.model.Organizer
 import land.moka.kmm.shared.model.Pinned
 import land.moka.kmm.shared.model.Profile
 import land.moka.kmm.shared.model.Repository
 
-class ProfileViewModel(private val api: Api) : ViewModel {
+class ProfileViewModel(
+    private val api: Api
+) : ViewModel {
 
     enum class Error {
         CONNECTION, SERVER, NOPE
@@ -49,8 +53,9 @@ class ProfileViewModel(private val api: Api) : ViewModel {
 
     private var endCursorOfMyRepositories: String? = null
 
+    @InternalCoroutinesApi
     suspend fun loadProfileData() {
-        delay(1000) // to checking placeHolder
+        delayExt(1000) // to checking placeHolder
         val res = api.queryAboutMoka()
         val profileRes = res.search
             .edges

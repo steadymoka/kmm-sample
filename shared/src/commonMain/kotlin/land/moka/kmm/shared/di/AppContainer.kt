@@ -8,7 +8,7 @@ import land.moka.kmm.shared.di.scope.RepositoryScope
 import org.kodein.di.DI
 import org.kodein.di.direct
 
-object AppContainer {
+class AppContainer {
 
     private val di = DI {
         import(networkModule)

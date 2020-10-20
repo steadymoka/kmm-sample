@@ -1,9 +1,11 @@
 package land.moka.kmm.shared.di.scope
 
+import land.moka.kmm.shared.di.AppContainer
+
 interface Scope {
 
-    fun onCreate()
+    fun onCreate(container: AppContainer)
 
-    fun onDestroy()
+    fun onDestroy(container: AppContainer)
 
 }

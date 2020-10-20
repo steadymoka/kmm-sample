@@ -23,8 +23,7 @@ class RepositoryViewModel(private val api: Api) : ViewModel {
     private val _repository = BroadcastChannel<Repository?>(1)
     val repository get() = _repository.asFlow()
 
-    //
-
+    @Throws(Exception::class)
     suspend fun loadRepository(name: String) {
         try {
             _loading.offer(true)

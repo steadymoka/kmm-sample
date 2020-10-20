@@ -2,8 +2,6 @@ package land.moka.kmm.androidApp.ui.main
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.fragment.NavHostFragment
-import land.moka.androidApp.R
 import land.moka.androidApp.databinding.NavigationMainBinding
 import land.moka.kmm.androidApp.ui.home.HomeLayout
 import land.moka.kmm.androidApp.ui.profile.ProfileLayout
