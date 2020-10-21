@@ -18,7 +18,7 @@ class _Application : Application() {
     override fun onCreate() {
         super.onCreate()
         context = this
-        container = AppContainer()
+        container = AppContainer.start()
         DEBUG = BuildConfig.DEBUG
     }
 

@@ -1,4 +1,4 @@
-package land.moka.kmm.shared.di.scope
+package land.moka.kmm.shared.di.scope.index
 
 import land.moka.kmm.shared.di.AppContainer
 

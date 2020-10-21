@@ -5,6 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.LifecycleObserver
+import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -23,7 +25,7 @@ import land.moka.kmm.androidApp.ui.profile.adapter.OverviewAdapter
 import land.moka.kmm.androidApp.ui.profile.adapter.RepositoryAdapter
 import land.moka.kmm.androidApp.util.load
 import land.moka.kmm.shared.app.viewmodel.profile.ProfileViewModel
-import land.moka.kmm.shared.di.scope.ProfileScope
+import land.moka.kmm.shared.di.scope.ProfileContainer
 import land.moka.kmm.shared.model.Repository
 import moka.land.base.*
 
@@ -31,7 +33,7 @@ class ProfileLayout : Fragment() {
 
     private val _view by lazy { LayoutProfileBinding.inflate(layoutInflater) }
 
-    private val viewModel: ProfileViewModel by lazy { _Application.container.profileContainer!!.viewModel }
+    private val viewModel by lazy { _Application.container.getContainer<ProfileContainer>().viewModel }
 
     private val overviewAdapter by lazy { OverviewAdapter() }
     private val repositoryAdapter by lazy { RepositoryAdapter() }
@@ -39,7 +41,7 @@ class ProfileLayout : Fragment() {
     @InternalCoroutinesApi
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         super.onCreateView(inflater, container, savedInstanceState)
-        ProfileScope().onCreate(_Application.container)
+        ProfileContainer.onCreate(_Application.container)
 
         initLayout()
         bindEvent()
@@ -52,7 +54,7 @@ class ProfileLayout : Fragment() {
     }
 
     override fun onDestroy() {
-        ProfileScope().onDestroy(_Application.container)
+        ProfileContainer.onDestroy(_Application.container)
         super.onDestroy()
     }
 

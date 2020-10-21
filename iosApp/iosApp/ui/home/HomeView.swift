@@ -2,21 +2,29 @@ import SwiftUI
 import shared
 
 struct HomeView: View {
-    var body: some View {
-        Text("Hello, World!\nHome")
-                .onAppear {
-                    aaaa()
-                }
-    }
-
-    func observe( _ action: () -> Unit) {
-
-    }
     
+    var body: some View {
+        ZStack {
+            VStack {
+                Spacer()
+                Rectangle()
+                    .fill(Color.white)
+                    .frame(width: .infinity, height: 10.0)
+                    .shadow(color: Color(red: 0, green: 0, blue: 0, opacity: 0.1), radius: 4, x: 0.0, y: -2)
+            }
+            
+            Text("Hello, World!\nHome")
+                .scaledToFill()
+        }
+        .onAppear() {
+            aaaa()
+        }
+    }
+
     func aaaa() {
-        let container = AppContainer()
-        ProfileScope().onCreate(container: container)
-        let viewModel = container.profileContainer!.viewModel
+        let container = AppContainer.Companion().start()
+        ProfileContainer.Companion().onCreate(container: container)
+        let viewModel = (container.getContainer(name: "ProfileContainer") as! ProfileContainer).viewModel
 
         viewModel.profile.observe { (value) in
             debugPrint("aaaaaaaaaaaaa value: \(value)")
@@ -29,12 +37,4 @@ struct HomeView_Previews: PreviewProvider {
     static var previews: some View {
         HomeView()
     }
-}
-
-extension Kotlinx_coroutines_coreFlow {
-
-    func observe( _ action: @escaping (Any?) -> Void) {
-        ApiUtilKt.observe(self, action: action)
-    }
-
 }

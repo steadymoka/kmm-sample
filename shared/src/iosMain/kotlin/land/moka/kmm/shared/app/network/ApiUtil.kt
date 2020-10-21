@@ -1,7 +1,5 @@
 package land.moka.kmm.shared.app.network
 
-import com.apollographql.apollo.ApolloCall
-import com.apollographql.apollo.api.Response
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
