@@ -5,8 +5,8 @@ import org.kodein.di.DI
 import org.kodein.di.bind
 import org.kodein.di.singleton
 
-val databaseModule = DI.Module("database") {
+val appModule = DI.Module("app") {
     bind<Preference>() with singleton {
-        Preference()
+        Preference("moka-pref")
     }
 }

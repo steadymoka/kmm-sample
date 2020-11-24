@@ -1,4 +1,4 @@
-package land.moka.kmm.shared.lib.util
+package land.moka.kmm.shared.lib
 
 import android.annotation.SuppressLint
 import android.app.Activity

@@ -1,4 +1,4 @@
-package land.moka.kmm.shared.app.network
+package land.moka.kmm.shared.lib
 
 import kotlinx.coroutines.*
 import platform.darwin.*

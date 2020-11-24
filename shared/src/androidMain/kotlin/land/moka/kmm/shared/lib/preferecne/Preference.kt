@@ -2,7 +2,7 @@ package land.moka.kmm.shared.lib.preferecne
 
 import android.content.Context
 import android.content.SharedPreferences
-import land.moka.kmm.shared.lib.util.application
+import land.moka.kmm.shared.lib.application
 
 actual class Preference {
 
