@@ -17,17 +17,17 @@ import kotlinx.coroutines.launch
 import land.moka.androidApp.R
 import land.moka.androidApp.databinding.LayoutProfileBinding
 import land.moka.kmm.androidApp._Application
+import land.moka.kmm.androidApp.base.BaseScopedFragment
 import land.moka.kmm.androidApp.ui.main._BlankFragmentDirections
 import land.moka.kmm.androidApp.ui.profile.adapter.OverviewAdapter
 import land.moka.kmm.androidApp.ui.profile.adapter.RepositoryAdapter
 import land.moka.kmm.androidApp.util.load
 import land.moka.kmm.shared.app.viewmodel.profile.ProfileViewModel
-import land.moka.kmm.shared.base.BaseScopedFragment
 import land.moka.kmm.shared.di.scope.ProfileContainer
 import land.moka.kmm.shared.model.Repository
 import moka.land.base.*
 
-class ProfileLayout : BaseScopedFragment(_Application.container, ProfileContainer) {
+class ProfileLayout : BaseScopedFragment(ProfileContainer) {
 
     private val _view by lazy { LayoutProfileBinding.inflate(layoutInflater) }
 

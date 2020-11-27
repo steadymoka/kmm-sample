@@ -1,4 +1,4 @@
-package land.moka.kmm.shared.base
+package land.moka.kmm.androidApp.base
 
 import android.os.Bundle
 import android.view.LayoutInflater

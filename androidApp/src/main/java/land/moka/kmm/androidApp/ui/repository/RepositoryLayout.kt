@@ -11,10 +11,10 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import land.moka.androidApp.databinding.LayoutRepositoryBinding
 import land.moka.kmm.androidApp._Application
-import land.moka.kmm.shared.base.BaseScopedFragment
+import land.moka.kmm.androidApp.base.BaseScopedFragment
 import land.moka.kmm.shared.di.scope.RepositoryContainer
 
-class RepositoryLayout : BaseScopedFragment(_Application.container, RepositoryContainer) {
+class RepositoryLayout : BaseScopedFragment(RepositoryContainer) {
 
     private val _view by lazy { LayoutRepositoryBinding.inflate(layoutInflater) }
     private val viewModel by lazy { _Application.container.getContainer<RepositoryContainer>().viewModel }
