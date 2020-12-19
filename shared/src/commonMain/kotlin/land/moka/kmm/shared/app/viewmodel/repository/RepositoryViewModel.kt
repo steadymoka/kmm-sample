@@ -5,7 +5,7 @@ import com.apollographql.apollo.ApolloNetworkException
 import kotlinx.coroutines.channels.BroadcastChannel
 import kotlinx.coroutines.flow.asFlow
 import land.moka.kmm.shared.model.Repository
-import land.moka.kmm.shared.app.network.Api
+import land.moka.kmm.shared.app.network.api.Api
 import land.moka.kmm.shared.app.viewmodel.ViewModel
 
 class RepositoryViewModel(private val api: Api) : ViewModel {

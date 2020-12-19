@@ -1,10 +1,11 @@
-package land.moka.kmm.shared.app.network
+package land.moka.kmm.shared.app.network.api
 
 import com.apollographql.apollo.*
 import com.apollographql.apollo.api.ApolloExperimental
 import com.apollographql.apollo.api.Input
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
+import land.moka.kmm.shared.app.network.singleExt
 
 @ExperimentalCoroutinesApi
 @ApolloExperimental

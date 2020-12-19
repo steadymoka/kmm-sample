@@ -2,10 +2,10 @@ package land.moka.kmm.shared.app.viewmodel.profile
 
 import com.apollographql.apollo.ApolloNetworkException
 import com.apollographql.apollo.exception.ApolloException
-import kotlinx.coroutines.*
+import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.channels.BroadcastChannel
 import kotlinx.coroutines.flow.asFlow
-import land.moka.kmm.shared.app.network.Api
+import land.moka.kmm.shared.app.network.api.Api
 import land.moka.kmm.shared.app.viewmodel.ViewModel
 import land.moka.kmm.shared.lib.util.delayExt
 import land.moka.kmm.shared.model.Organizer
