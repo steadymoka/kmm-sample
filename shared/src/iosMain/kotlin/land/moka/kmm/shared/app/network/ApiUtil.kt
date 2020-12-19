@@ -6,7 +6,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.single
 import kotlinx.coroutines.launch
-import land.moka.kmm.shared.lib.MainLoopDispatcher
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 

@@ -43,7 +43,7 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.0-M1")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.1")
                 implementation("com.apollographql.apollo:apollo-runtime-kotlin:2.4.1")
                 implementation("org.kodein.di:kodein-di:7.1.0")
             }
