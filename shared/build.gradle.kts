@@ -6,6 +6,7 @@ import com.codingfeline.buildkonfig.compiler.FieldSpec.Type
 plugins {
     kotlin("multiplatform")
     kotlin("native.cocoapods")
+    kotlin("plugin.serialization") version "1.4.20"
     id("com.android.library")
     id("com.apollographql.apollo") version "2.4.1"
     id("com.codingfeline.buildkonfig")
@@ -41,8 +42,12 @@ kotlin {
         }
     }
     sourceSets {
+        val serializationVersion = "1.0.1"
+
         val commonMain by getting {
             dependencies {
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:$serializationVersion")
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$serializationVersion")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.1")
                 implementation("com.apollographql.apollo:apollo-runtime-kotlin:2.4.1")
                 implementation("org.kodein.di:kodein-di:7.1.0")

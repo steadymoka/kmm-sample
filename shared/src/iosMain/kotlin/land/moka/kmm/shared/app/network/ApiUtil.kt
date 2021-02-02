@@ -6,13 +6,14 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.single
 import kotlinx.coroutines.launch
+import land.moka.kmm.shared.lib.util.dispatcher
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
 @InternalCoroutinesApi
 actual suspend fun <T> Flow<T>.singleExt(): T {
     return suspendCoroutine { continuation ->
-        GlobalScope.launch(MainLoopDispatcher) {
+        GlobalScope.launch(dispatcher()) {
             continuation.resume(this@singleExt.single())
         }
     }
@@ -20,7 +21,7 @@ actual suspend fun <T> Flow<T>.singleExt(): T {
 
 @InternalCoroutinesApi
 fun <T> Flow<T>.observe(action: (T) -> Unit) {
-    GlobalScope.launch(MainLoopDispatcher) {
+    GlobalScope.launch(dispatcher()) {
         this@observe.collect { action(it) }
     }
 }
